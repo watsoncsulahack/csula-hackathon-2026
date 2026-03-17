@@ -1,9 +1,9 @@
-# Hackathon Presentation (3–5 min)
+# Hackathon Presentation (3 min)
 
-Built using the guidance from *How to Win Every Hackathon*:
-- 25% Background
-- 50% Demo
-- 25% Review / importance / future
+Built using the guidance from *How to Win Every Hackathon*, compressed to a strict 3-minute format:
+- 25% Background (~45 sec)
+- 50% Demo (~90 sec)
+- 25% Review / importance / future (~45 sec)
 
 ---
 
@@ -50,7 +50,7 @@ Narration:
 
 ---
 
-## Slide 5 — Live Demo (90-120s)
+## Slide 5 — Live Demo (75-90s)
 ### Demo script
 1. Select scenario (e.g. high-acuity patient)
 2. Show verified insurance details
@@ -91,7 +91,7 @@ Close line:
 - Presenter C: Impact, future work, Q&A
 
 ## Delivery checklist
-- Keep under 5 minutes
+- Keep under 3 minutes
 - Practice once with timer
 - Prioritize a complete demo over perfect polish
 - If anything breaks, still show architecture + expected output
