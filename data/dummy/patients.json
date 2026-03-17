@@ -1,0 +1,5 @@
+[
+  {"patient_id":"P9001","scenario":"stroke_like","geo_location":"34.0689,-118.4452","symptoms":["slurred_speech","facial_droop"],"acuity_level":"high","insurance_member_id":"M1001"},
+  {"patient_id":"P9002","scenario":"trauma","geo_location":"34.0407,-118.2468","symptoms":["blunt_trauma","blood_loss"],"acuity_level":"critical","insurance_member_id":"M2003"},
+  {"patient_id":"P9003","scenario":"low_acuity","geo_location":"34.0211,-118.3965","symptoms":["dizziness","mild_chest_discomfort"],"acuity_level":"moderate","insurance_member_id":"M3302"}
+]

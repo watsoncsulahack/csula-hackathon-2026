@@ -1,0 +1,5 @@
+[
+  {"member_id":"M1001","plan_id":"PPO_PLUS","active":true,"in_network_hospitals":["H001","H003"],"deductible_remaining":700,"copay_er":150},
+  {"member_id":"M2003","plan_id":"EPO_FAST","active":true,"in_network_hospitals":["H002","H003"],"deductible_remaining":1200,"copay_er":200},
+  {"member_id":"M3302","plan_id":"HMO_A","active":true,"in_network_hospitals":["H001","H003"],"deductible_remaining":300,"copay_er":80}
+]

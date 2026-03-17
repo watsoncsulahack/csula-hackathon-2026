@@ -1,0 +1,5 @@
+[
+  {"hospital_id":"H001","name":"Starlight Medical Center","specialties":["stroke","trauma","cardiac"],"capacity_status":"medium","wait_minutes":18,"accepted_plans":["PPO_PLUS","HMO_A"],"estimated_out_of_pocket":450},
+  {"hospital_id":"H002","name":"Valley General","specialties":["trauma","general"],"capacity_status":"high","wait_minutes":42,"accepted_plans":["PPO_PLUS","EPO_FAST"],"estimated_out_of_pocket":250},
+  {"hospital_id":"H003","name":"Coastal Neuro Care","specialties":["stroke","neuro"],"capacity_status":"low","wait_minutes":12,"accepted_plans":["PPO_PLUS","HMO_A","EPO_FAST"],"estimated_out_of_pocket":520}
+]

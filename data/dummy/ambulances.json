@@ -1,0 +1,5 @@
+[
+  {"unit_id":"A101","eta_minutes":7,"capability_level":"ALS","transport_cost_estimate":380,"status":"available"},
+  {"unit_id":"A102","eta_minutes":11,"capability_level":"BLS","transport_cost_estimate":240,"status":"available"},
+  {"unit_id":"A103","eta_minutes":5,"capability_level":"ALS","transport_cost_estimate":460,"status":"available"}
+]
