@@ -1,0 +1,87 @@
+flowchart LR
+  %% Larger readable style for presentation
+  classDef panel fill:#2f3237,stroke:#9aa0a6,stroke-width:2px,color:#f5f7fa;
+  classDef box fill:#d9f0ff,stroke:#3b82f6,stroke-width:2px,color:#0b1a2b;
+  classDef overlap fill:#d4f7e6,stroke:#10b981,stroke-width:2px,color:#0b1a2b;
+  classDef decision fill:#efe6ff,stroke:#8b5cf6,stroke-width:2px,color:#0b1a2b;
+  classDef outcome fill:#fff7cf,stroke:#d4a21a,stroke-width:2px,color:#0b1a2b;
+  classDef data fill:#ffe9cc,stroke:#f59e0b,stroke-width:2px,color:#0b1a2b;
+
+  subgraph STK[Stakeholders]
+    P[Patient]
+    H[Hospital]
+    I[Insurance Provider]
+    E[EMS / Ambulance]
+  end
+
+  subgraph BP[Business Processes]
+    B1[Condition, acuity,\nand location captured]
+    B2[Capacity, specialty, wait,\naccepted plan checked]
+    B3[Eligibility, coverage,\nand pricing confirmed]
+    B4[Unit availability, ETA,\nand transport cost calculated]
+  end
+
+  subgraph OL[Where Processes Overlap]
+    O1[Clinical fit:\npatient need ↔ hospital capability]
+    O2[Coverage + price fit:\ninsurance ↔ accepted plan]
+    O3[Route score:\nETA + wait + cost]
+  end
+
+  subgraph DS[Data Stores]
+    D1[(Patient Events DB)]
+    D2[(Coverage Rules DB)]
+    D3[(EMS Availability DB)]
+    D4[(Hospital Capacity DB)]
+    D5[(Decision Log / Audit DB)]
+  end
+
+  subgraph DE[Decision + Execution]
+    C[CareRoute Decision Engine]
+    A[Select best ambulance]
+    S[Select best hospital]
+    X[Dispatch, pickup,\nand transport]
+  end
+
+  subgraph OUT[Outcomes]
+    R1[Appropriate facility match]
+    R2[Lower patient cost exposure]
+    R3[Faster pickup and arrival]
+  end
+
+  P --> B1
+  H --> B2
+  I --> B3
+  E --> B4
+
+  B1 --> O1
+  B2 --> O1
+  B2 --> O2
+  B3 --> O2
+  B4 --> O3
+
+  O1 --> C
+  O2 --> C
+  O3 --> C
+
+  C --> A
+  C --> S
+  A --> X
+  S --> X
+
+  X --> R1
+  X --> R2
+  X --> R3
+
+  B1 --> D1
+  B2 --> D4
+  B3 --> D2
+  B4 --> D3
+  C --> D5
+  X --> D5
+
+  class STK,BP,OL,DE,OUT panel;
+  class P,H,I,E,B1,B2,B3,B4 box;
+  class O1,O2,O3 overlap;
+  class C,A,S,X decision;
+  class R1,R2,R3 outcome;
+  class D1,D2,D3,D4,D5 data;

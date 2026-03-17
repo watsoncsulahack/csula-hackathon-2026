@@ -1,0 +1,83 @@
+digraph SERP {
+  rankdir=LR;
+  splines=ortho;
+  fontname="Arial";
+  fontsize=22;
+  nodesep=0.6;
+  ranksep=1.0;
+  pad=0.2;
+  bgcolor="#2f3237";
+
+  node [fontname="Arial", fontsize=18, style="rounded,filled", penwidth=2];
+  edge [color="#d7dde4", penwidth=2, arrowsize=0.8];
+
+  subgraph cluster_stk {
+    label="Stakeholders";
+    color="#9aa0a6";
+    fontcolor="#f4f7fb";
+    P [label="Patient", fillcolor="#d9f0ff", color="#3b82f6", fontcolor="#0b1a2b"];
+    H [label="Hospital", fillcolor="#d9f0ff", color="#3b82f6", fontcolor="#0b1a2b"];
+    I [label="Insurance\nProvider", fillcolor="#d9f0ff", color="#3b82f6", fontcolor="#0b1a2b"];
+    E [label="EMS /\nAmbulance", fillcolor="#d9f0ff", color="#3b82f6", fontcolor="#0b1a2b"];
+  }
+
+  subgraph cluster_bp {
+    label="Business Processes";
+    color="#9aa0a6";
+    fontcolor="#f4f7fb";
+    B1 [label="Condition, acuity,\nand location captured", fillcolor="#d9f0ff", color="#3b82f6", fontcolor="#0b1a2b"];
+    B2 [label="Capacity, specialty, wait,\naccepted plan checked", fillcolor="#d9f0ff", color="#3b82f6", fontcolor="#0b1a2b"];
+    B3 [label="Eligibility, coverage,\nand pricing confirmed", fillcolor="#d9f0ff", color="#3b82f6", fontcolor="#0b1a2b"];
+    B4 [label="Unit availability, ETA,\nand transport cost calculated", fillcolor="#d9f0ff", color="#3b82f6", fontcolor="#0b1a2b"];
+  }
+
+  subgraph cluster_ol {
+    label="Where Processes Overlap";
+    color="#9aa0a6";
+    fontcolor="#f4f7fb";
+    O1 [label="Clinical fit:\npatient need ↔ hospital capability", fillcolor="#d4f7e6", color="#10b981", fontcolor="#0b1a2b"];
+    O2 [label="Coverage + price fit:\ninsurance ↔ accepted plan", fillcolor="#d4f7e6", color="#10b981", fontcolor="#0b1a2b"];
+    O3 [label="Route score:\nETA + wait + cost", fillcolor="#d4f7e6", color="#10b981", fontcolor="#0b1a2b"];
+  }
+
+  subgraph cluster_ds {
+    label="Data Stores";
+    color="#9aa0a6";
+    fontcolor="#f4f7fb";
+    node [shape=cylinder, style="filled", fillcolor="#ffe9cc", color="#f59e0b", fontcolor="#0b1a2b", fontsize=16];
+    D1 [label="Patient\nEvents DB"];
+    D2 [label="Coverage\nRules DB"];
+    D3 [label="EMS\nAvailability DB"];
+    D4 [label="Hospital\nCapacity DB"];
+    D5 [label="Decision Log\nAudit DB"];
+    node [shape=box, style="rounded,filled", fontsize=18];
+  }
+
+  subgraph cluster_de {
+    label="Decision + Execution";
+    color="#9aa0a6";
+    fontcolor="#f4f7fb";
+    C [label="CareRoute\nDecision Engine", fillcolor="#efe6ff", color="#8b5cf6", fontcolor="#0b1a2b"];
+    A [label="Select best\nambulance", fillcolor="#efe6ff", color="#8b5cf6", fontcolor="#0b1a2b"];
+    S [label="Select best\nhospital", fillcolor="#efe6ff", color="#8b5cf6", fontcolor="#0b1a2b"];
+    X [label="Dispatch, pickup,\nand transport", fillcolor="#efe6ff", color="#8b5cf6", fontcolor="#0b1a2b"];
+  }
+
+  subgraph cluster_out {
+    label="Outcomes";
+    color="#9aa0a6";
+    fontcolor="#f4f7fb";
+    R1 [label="Appropriate\nfacility match", fillcolor="#fff7cf", color="#d4a21a", fontcolor="#0b1a2b"];
+    R2 [label="Lower patient\ncost exposure", fillcolor="#fff7cf", color="#d4a21a", fontcolor="#0b1a2b"];
+    R3 [label="Faster pickup\nand arrival", fillcolor="#fff7cf", color="#d4a21a", fontcolor="#0b1a2b"];
+  }
+
+  P -> B1; H -> B2; I -> B3; E -> B4;
+  B1 -> O1; B2 -> O1; B2 -> O2; B3 -> O2; B4 -> O3;
+  O1 -> C; O2 -> C; O3 -> C;
+  C -> A; C -> S; A -> X; S -> X;
+  X -> R1; X -> R2; X -> R3;
+
+  B1 -> D1; B2 -> D4; B3 -> D2; B4 -> D3;
+  C -> D5; X -> D5;
+}
