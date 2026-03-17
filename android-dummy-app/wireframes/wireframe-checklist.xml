@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wireframeChecklist project="SmartEmergencyRouting" version="v0.1" platform="android" scope="frontend-only">
+  <meta>
+    <goal>Clickable demo app for judges (no backend logic)</goal>
+    <timebox>14-hour hackathon mode</timebox>
+  </meta>
+
+  <screens>
+    <screen id="S01" name="SplashAndModeSelect" required="true">
+      <elements>
+        <item>App title + subtitle</item>
+        <item>Button: Start Demo</item>
+        <item>Button: Scenario Mode</item>
+      </elements>
+    </screen>
+
+    <screen id="S02" name="ScenarioPicker" required="true">
+      <elements>
+        <item>Card: Stroke-like case</item>
+        <item>Card: Trauma case</item>
+        <item>Card: Low-acuity case</item>
+        <item>Button: Continue</item>
+      </elements>
+    </screen>
+
+    <screen id="S03" name="PatientIntake" required="true">
+      <elements>
+        <item>Input: Patient ID (mock)</item>
+        <item>Input: Symptoms (mock)</item>
+        <item>Input: Location (mock)</item>
+        <item>Chip group: Acuity level</item>
+        <item>Button: Verify Insurance</item>
+      </elements>
+    </screen>
+
+    <screen id="S04" name="InsuranceVerification" required="true">
+      <elements>
+        <item>Status chip: Verified / Pending / Failed</item>
+        <item>Text: Plan ID</item>
+        <item>Text: In-network hospitals count</item>
+        <item>Text: Deductible remaining</item>
+        <item>Button: Continue to Routing</item>
+      </elements>
+    </screen>
+
+    <screen id="S05" name="AmbulanceRanking" required="true">
+      <elements>
+        <item>Recycler list: Unit ID</item>
+        <item>Field: ETA</item>
+        <item>Field: Capability</item>
+        <item>Field: Transport cost</item>
+        <item>Field: Composite score</item>
+      </elements>
+    </screen>
+
+    <screen id="S06" name="HospitalRanking" required="true">
+      <elements>
+        <item>Recycler list: Hospital name</item>
+        <item>Field: Specialty fit</item>
+        <item>Field: Wait time</item>
+        <item>Field: In-network yes/no</item>
+        <item>Field: Estimated patient cost</item>
+        <item>Field: Composite score</item>
+      </elements>
+    </screen>
+
+    <screen id="S07" name="Recommendation" required="true">
+      <elements>
+        <item>Card: Selected ambulance</item>
+        <item>Card: Selected hospital</item>
+        <item>Card: Why this route won</item>
+        <item>Badge: Confidence score</item>
+        <item>Button: Confirm Dispatch</item>
+      </elements>
+    </screen>
+
+    <screen id="S08" name="DispatchConfirmation" required="true">
+      <elements>
+        <item>Timeline: Pickup ETA</item>
+        <item>Timeline: Arrival ETA</item>
+        <item>Text: Dispatch event ID (mock)</item>
+        <item>Button: Restart Demo</item>
+      </elements>
+    </screen>
+  </screens>
+
+  <navigation>
+    <flow>S01-&gt;S02-&gt;S03-&gt;S04-&gt;S05-&gt;S06-&gt;S07-&gt;S08</flow>
+    <allowBackNavigation>true</allowBackNavigation>
+  </navigation>
+
+  <dataMode>
+    <source>Local JSON assets only</source>
+    <networkCalls>disabled</networkCalls>
+  </dataMode>
+
+  <judgeDemoChecklist>
+    <item>Switch scenarios live in under 3 taps</item>
+    <item>Show insurance verification state clearly</item>
+    <item>Show ranked ambulance and hospital lists</item>
+    <item>Show final recommendation with rationale</item>
+    <item>Finish full walkthrough in 2-3 minutes</item>
+  </judgeDemoChecklist>
+</wireframeChecklist>
