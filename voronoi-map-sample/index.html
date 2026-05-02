@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Voronoi Seed Runner</title>
+  <style>
+    :root { color-scheme: light dark; }
+    body { font-family: Inter, system-ui, sans-serif; margin: 0; background: #0b1020; color: #e5e7eb; }
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 20px; }
+    .card { background: #11172a; border: 1px solid #24304d; border-radius: 12px; padding: 14px; }
+    .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 12px; }
+    button,input { background: #1b2640; color: #e5e7eb; border: 1px solid #334a79; border-radius: 8px; padding: 8px 10px; }
+    input { width: 86px; }
+    #chart { width: 100%; height: auto; display: block; border-radius: 10px; background: #0e1529; cursor: crosshair; }
+    .hint { color: #9fb0d6; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Voronoi Seed Runner</h1>
+    <p class="hint">Click on the canvas to place seeds, then tap Run to animate (Lloyd relaxation).</p>
+    <div class="card">
+      <div class="row">
+        <button id="run">Run</button>
+        <button id="stop">Stop</button>
+        <button id="undo">Undo</button>
+        <button id="clear">Clear</button>
+        <button id="random">Random</button>
+        <label>Random n <input id="count" type="number" min="5" max="500" value="80" /></label>
+      </div>
+      <svg id="chart" viewBox="0 0 1000 620" aria-label="Voronoi map"></svg>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+  <script>
+    const W = 1000, H = 620;
+    const svg = d3.select('#chart');
+    const gCells = svg.append('g');
+    const gPoints = svg.append('g');
+
+    let points = [];
+    let timer = null;
+
+    function randomPoints(n) {
+      return Array.from({ length: n }, () => [Math.random() * W, Math.random() * H]);
+    }
+
+    function oneLloydStep(pts) {
+      if (pts.length < 2) return pts;
+      const delaunay = d3.Delaunay.from(pts);
+      const vor = delaunay.voronoi([0, 0, W, H]);
+      return pts.map((p, i) => {
+        const poly = vor.cellPolygon(i);
+        if (!poly || poly.length < 3) return p;
+        let a = 0, cx = 0, cy = 0;
+        for (let j = 0; j < poly.length - 1; j++) {
+          const [x1, y1] = poly[j], [x2, y2] = poly[j + 1];
+          const f = x1 * y2 - x2 * y1;
+          a += f; cx += (x1 + x2) * f; cy += (y1 + y2) * f;
+        }
+        a *= 0.5;
+        return Math.abs(a) < 1e-6 ? p : [cx / (6 * a), cy / (6 * a)];
+      });
+    }
+
+    function render(pts) {
+      if (!pts.length) {
+        gCells.selectAll('path').remove();
+        gPoints.selectAll('circle').remove();
+        return;
+      }
+      const delaunay = d3.Delaunay.from(pts);
+      const vor = delaunay.voronoi([0, 0, W, H]);
+      const cells = pts.map((_, i) => ({ i, path: vor.renderCell(i) }));
+
+      gCells.selectAll('path')
+        .data(cells, d => d.i)
+        .join('path')
+        .attr('d', d => d.path)
+        .attr('fill', (_, i) => d3.interpolateTurbo(i / Math.max(1, pts.length - 1)))
+        .attr('fill-opacity', 0.72)
+        .attr('stroke', '#0b1020')
+        .attr('stroke-width', 1);
+
+      gPoints.selectAll('circle')
+        .data(pts)
+        .join('circle')
+        .attr('cx', d => d[0])
+        .attr('cy', d => d[1])
+        .attr('r', 2.2)
+        .attr('fill', '#ffffff');
+    }
+
+    function stop() { if (timer) { clearInterval(timer); timer = null; } }
+    function run() {
+      stop();
+      if (points.length < 2) return;
+      timer = setInterval(() => { points = oneLloydStep(points); render(points); }, 80);
+    }
+
+    svg.on('click', (event) => {
+      const [x, y] = d3.pointer(event, svg.node());
+      points.push([Math.max(0, Math.min(W, x)), Math.max(0, Math.min(H, y))]);
+      render(points);
+    });
+
+    document.getElementById('run').addEventListener('click', run);
+    document.getElementById('stop').addEventListener('click', stop);
+    document.getElementById('undo').addEventListener('click', () => { stop(); points.pop(); render(points); });
+    document.getElementById('clear').addEventListener('click', () => { stop(); points = []; render(points); });
+    document.getElementById('random').addEventListener('click', () => {
+      stop();
+      const n = Math.max(5, Math.min(500, Number(document.getElementById('count').value) || 80));
+      points = randomPoints(n);
+      render(points);
+    });
+
+    points = randomPoints(40);
+    render(points);
+  </script>
+</body>
+</html>
